@@ -37,18 +37,6 @@ const users = [
 
 // get users
 
-// app.get('/users', (req, res) =>  {
-    
-//   const myuser = User.find({}, 'username email password phone').then((user) => {
-//     return res.json(user);
-
-//   })
-//   .catch((error) => {
-//     return res.status(500).json({ error: err.message });
-//   })
-
-
-// })
 
 app.get('/users', async (req, res) => {
   try {
@@ -92,6 +80,29 @@ app.post('/user/create',(req,res) => {
 
 
 })
+
+
+// get unique user
+
+
+app.get('/user/:id', async (req,res) => {
+
+  try{
+
+    const unique = req.params.id;
+
+    const uniqueUser = await User.find({id}, 'username email password phone');
+
+    return res.json(uniqueUser);
+
+  }
+
+  catch(error){
+    return res.status(500).json("An error occurred");
+  }
+
+})
+
 
 
 
