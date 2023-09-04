@@ -84,6 +84,10 @@ app.post('/user/create',(req,res) => {
 
 // get unique user using find 
 
+// use find when you want to find any stuff(can be many) returns and array
+
+// findOne when you want to look for a particular stuff returns and object
+
 
 app.get('/user/:username', async (req,res) => {
 
@@ -95,7 +99,7 @@ app.get('/user/:username', async (req,res) => {
 
     const unique = req.query.username;
 
-    const uniqueUser = await User.find({username:req.params['username']}, 'username email password phone');
+    const uniqueUser = await User.findOne({username:req.params['username']}, 'username email password phone');
 
     
     if (!uniqueUser) {
@@ -111,6 +115,32 @@ app.get('/user/:username', async (req,res) => {
     return res.status(500).json("An error occurred");
   }
 
+})
+
+
+// get user by ID
+
+
+app.get('/user/find/:id',  async (req, res) => {
+
+  try{
+
+    const input = req.params.id;
+
+    const user = await User.findById(input, 'username email password phone');
+
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+
+    }
+
+    return res.json(user)
+
+  }
+
+  catch(error){
+    return res.status(500).json({messageb : 'Internal server error'});
+  }
 })
 
 
