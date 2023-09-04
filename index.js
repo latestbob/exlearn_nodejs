@@ -139,7 +139,37 @@ app.get('/user/find/:id',  async (req, res) => {
   }
 
   catch(error){
-    return res.status(500).json({messageb : 'Internal server error'});
+    return res.status(500).json({message : 'Internal server error'});
+  }
+})
+
+
+// update user details
+
+
+app.put('/user/:id/update', async (req, res) => {
+  
+  try{
+
+    const input = req.params.id;
+
+    const {username , email, phone} = req.query;
+
+    const user = await User.findByIdAndUpdate(input, {username:username, email:email, phone:phone});
+
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+    }
+
+    return res.json({
+      message:"User updated successfully",
+      user:user,
+    });
+
+  }
+
+  catch(error){
+    return res.status(500).json({message:error});
   }
 })
 
