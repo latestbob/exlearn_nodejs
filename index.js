@@ -82,17 +82,27 @@ app.post('/user/create',(req,res) => {
 })
 
 
-// get unique user
+// get unique user using find 
 
 
-app.get('/user/:id', async (req,res) => {
+app.get('/user/:username', async (req,res) => {
+
+  
+   
+  //return res.json(req.params['id']);
 
   try{
 
-    const unique = req.params.id;
+    const unique = req.query.username;
 
-    const uniqueUser = await User.find({id}, 'username email password phone');
+    const uniqueUser = await User.find({username:req.params['username']}, 'username email password phone');
 
+    
+    if (!uniqueUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Send the user data back as a response
     return res.json(uniqueUser);
 
   }
