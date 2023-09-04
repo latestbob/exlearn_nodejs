@@ -174,6 +174,36 @@ app.put('/user/:id/update', async (req, res) => {
 })
 
 
+// delete User by ID
+
+app.delete('/user/:id', async (req, res) => {
+
+  try{
+
+    const input = req.params['id'];
+
+    const user = await User.findByIdAndDelete(input);
+
+    if(!user){
+      return res.status(500).json({
+        message : "User not found",
+      });
+    
+    }
+
+
+    return res.json({
+      message: "user deleted successfully",
+      user: user,
+    });
+
+  }
+  catch(error){
+    return res.status(500).json({message : "Unexpected error had occurred"});
+  }
+})
+
+
 
 
 
